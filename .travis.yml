@@ -1,0 +1,41 @@
+language: c++
+compiler: gcc
+
+os: linux
+dist: trusty
+sudo: false
+
+notifications:
+  email: false
+
+addons:
+  apt:
+    sources:
+    - sourceline: 'deb http://pl.archive.ubuntu.com/ubuntu xenial main universe'
+    - sourceline: 'deb http://pl.archive.ubuntu.com/ubuntu xenial main'
+    packages:
+    - g++
+    - libsdl2-dev
+  artifacts:
+    paths:
+    - $(ls *.gz | tr "\n" :)
+
+matrix:
+  include:
+  - env:
+    - BUILD_TYPE=Release
+    - ENABLE_UI=1
+  - env:
+    - BUILD_TYPE=Debug
+    - ENABLE_UI=1
+
+before_script:
+  - pushd $HOME
+  - git clone https://github.com/openbw/openbw
+  - popd
+  - mkdir build
+  - cd build
+  - cmake .. -DCMAKE_BUILD_TYPE=$BUILD_TYPE -DOPENBW_DIR=$HOME/openbw -DOPENBW_ENABLE_UI=$ENABLE_UI
+
+script:
+  - cmake --build . -- -j4 package

@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.1)
-project(BWAPI)
+project(BWAPI VERSION 4.1.12)
 
 set(CMAKE_DISABLE_SOURCE_CHANGES ON)
 set(CMAKE_DISABLE_IN_SOURCE_BUILD ON)
@@ -18,3 +18,9 @@ if (MSVC)
 endif()
 
 add_subdirectory(bwapi)
+
+# Package
+
+set(CPACK_GENERATOR "TGZ")
+set(CPACK_PACKAGE_VERSION ${PROJECT_VERSION})
+include(CPack)
